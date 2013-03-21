@@ -24,75 +24,11 @@ namespace LL.ShareTarget.ViewModels
 
         public async Task ShareAsync(ShareOperation shareOperation)
         {
-            _shareOperation = shareOperation;
-            shareOperation.ReportStarted();
-            var dataPackageView = shareOperation.Data;
-
-            RequestTitle = shareOperation.Data.Properties.Title;
-            RequestDescription = shareOperation.Data.Properties.Description;
-
-            try
-            {
-                if ( dataPackageView.IsTextMessage() )
-                {
-                    IsTextRequest = true;
-                    TextShareValue = await dataPackageView.GetTextAsync();
-                }
-                else if (dataPackageView.IsUrlMessage())
-                {
-                    IsUrlRequest = true;
-                    var foundUri = await dataPackageView.GetUriAsync();
-
-                    UrlShareValue = foundUri.AbsoluteUri;
-                }
-                else if (dataPackageView.IsStorageItemsMessage())
-                {
-                    IsStorageRequest = true;
-                    var storageItems = await dataPackageView.GetStorageItemsAsync();
-                    if ( storageItems.Any())
-                    {
-                        var storageItem = storageItems.First();
-                        if ( storageItem.IsOfType(StorageItemTypes.File))
-                        {
-                            StorageFileName = storageItem.Name;
-                            var thumbNail = dataPackageView.Properties.Thumbnail;
-                            var thumbnailStream = await thumbNail.OpenReadAsync();
-
-                            ImageShareValue = new BitmapImage();
-                            ImageShareValue.SetSource(thumbnailStream);
-                        }
-                    }
-                }
-                else if (dataPackageView.IsImageMessage())
-                {
-                    IsImageRequest = true;
-                    var imageRecieved = await dataPackageView.GetBitmapAsync();
-                    var imageStream = await imageRecieved.OpenReadAsync();
-
-                    ImageShareValue = new BitmapImage();
-                    ImageShareValue.SetSource(imageStream);
-                }
-            }
-            catch (Exception e)
-            {
-                shareOperation.ReportError(e.Message);               
-                RequestDescription = e.Message;
-            }
-            
-
-            shareOperation.ReportDataRetrieved();
+           
         }
-
-
+        
         private void SaveContent()
         {
-            var quickLink = new QuickLink
-                                {
-                                    Id = "LL.ShareTarge",
-                                    Title = "Share Target"
-                                };
-
-            _shareOperation.ReportCompleted(quickLink);
         }
 
         private string _textShareValue;
