@@ -18,23 +18,6 @@ namespace LL.SearchContracts.ViewModels
             _repository = repository;
         }
 
-        public async void PerformSearchAsync(string searchString)
-        {
-            SearchString = searchString;
-            PageTitle = string.Format("Search: {0}", searchString);
-            Items.Clear();
-
-            var searchResults = await _repository.SearchAsync(searchString);
-            if ( !searchResults.Any()){return;}
-
-            foreach (var searchResult in searchResults)
-            {
-                Items.Add(new SearchItemModel(searchResult));
-            }
-
-            SelectedItem = Items.FirstOrDefault();
-            OnPropertyChanged("Items");
-        }
         
         private SearchItemModel _selectedItem;
         public SearchItemModel SelectedItem

@@ -1,23 +1,9 @@
-﻿using LL.SearchContracts.Data;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using LL.SearchContracts.DataModel;
 using LL.SearchContracts.ViewModels;
 using Windows.ApplicationModel.Search;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234233
 
@@ -29,33 +15,13 @@ namespace LL.SearchContracts.Views
     /// </summary>
     public sealed partial class DashboardPage : LL.SearchContracts.Common.LayoutAwarePage
     {
-        private SearchPane _currentSearchPane
-            ;
-
-
         public DashboardPage()
         {
 
             this.InitializeComponent();
             DataContext = new DashboardViewModel();
-
-            SetupSearchSuggestions();
         }
 
-        private void SetupSearchSuggestions()
-        {
-            _currentSearchPane = SearchPane.GetForCurrentView();
-
-            _currentSearchPane.PlaceholderText = "Search for a Car by Name";
-            _currentSearchPane.SuggestionsRequested += CurrentSearchPaneOnSuggestionsRequested;
-        }
-
-        private void CurrentSearchPaneOnSuggestionsRequested(SearchPane sender, SearchPaneSuggestionsRequestedEventArgs args)
-        {
-            var suggestions = (DataContext as DashboardViewModel).SearchSuggestiongsAsync(args.QueryText);
-
-            args.Request.SearchSuggestionCollection.AppendQuerySuggestions(suggestions.Result);
-        }
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also

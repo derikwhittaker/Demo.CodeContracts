@@ -85,14 +85,5 @@ namespace LL.SearchContracts
             deferral.Complete();
         }
 
-        protected override void OnSearchActivated(SearchActivatedEventArgs args)
-        {
-            base.OnSearchActivated(args);
-
-            var searchResultsPage = new SearchResultsPage();
-            ((SearchResultsViewModel)searchResultsPage.DataContext).PerformSearchAsync(args.QueryText);
-
-            WindowManager.NavigateTo(searchResultsPage);
-        }
     }
 }
